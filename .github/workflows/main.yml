@@ -1,16 +1,30 @@
-name: CI Pipeline
+name: Deploy to EC2
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Run a simple build step
-      run: echo "CI Pipeline is working!"
+    - name: Copy files to EC2
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_IP }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "./*"
+        target: "/home/ubuntu/app-files/"
+
+    - name: Run deployment script on EC2
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_IP }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: "bash /home/ubuntu/deploy.sh"
