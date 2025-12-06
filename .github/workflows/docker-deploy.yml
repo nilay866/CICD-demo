@@ -36,8 +36,5 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_SSHKEY }}
         script: |
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/cicd-demo:latest
-          sudo docker stop cicd-demo || true
-          sudo docker rm cicd-demo || true
-          sudo docker run -d -p 80:80 --name cicd-demo ${{ secrets.DOCKER_USERNAME }}/cicd-demo:latest
-          sudo docker ps -a
+          cd /home/ubuntu
+          sudo bash deplo.sh
