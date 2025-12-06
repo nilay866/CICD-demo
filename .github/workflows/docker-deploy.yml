@@ -34,7 +34,7 @@ jobs:
       with:
         host: ${{ secrets.EC2_IP }}
         username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
+        key: ${{ secrets.EC2_SSHKEY }}
         script: |
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/cicd-demo:latest
           sudo docker stop cicd-demo || true
