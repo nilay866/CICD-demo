@@ -19,7 +19,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2SSHKEY }}
+          key: ${{ secrets.EC2_SSHKEY }}
           source: "./*"
           target: "/home/ubuntu/app-files/"
 
@@ -29,6 +29,6 @@ jobs:
         with:
           host: ${{ secrets.EC2_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2SSHKEY }}
+          key: ${{ secrets.EC2_SSHKEY }}
           script: |
             sudo bash /home/ubuntu/deploy.sh
