@@ -2,34 +2,33 @@ name: Deploy to EC2
 
 on:
   push:
-    branches:
-      - "main"
+    branches: ["main"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repo
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # Step 2: Copy files to EC2
       - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_SSHKEY }}
+          key: ${{ secrets.EC2SSHKEY }}
           source: "./*"
           target: "/home/ubuntu/app-files/"
 
-      - name: Run deployment script on EC2
+      # Step 3: Run deployment script on EC2
+      - name: Run deployment script
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.EC2_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_SSHKEY }}
+          key: ${{ secrets.EC2SSHKEY }}
           script: |
-            echo "Deploying on EC2..."
-            mkdir -p /home/ubuntu/app-files/
-            ls -la /home/ubuntu/app-files/
-            echo "✔ Deployment Completed!"
+            sudo bash /home/ubuntu/deploy.sh
